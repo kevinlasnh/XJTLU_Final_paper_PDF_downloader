@@ -1,16 +1,18 @@
 # XJTLU PDF 批量下载器
 
-从 XJTLU ETD (Electronic Theses and Dissertations) 系统批量下载 PDF 文件的工具。
+从 XJTLU ETD (Electronic Theses and Dissertations) 系统批量下载 PDF 文件的跨平台工具。
 
 ## 功能特点
 
 - 🚀 **批量处理**：支持同时添加多个 PDF 链接进行下载
 - 📂 **目录管理**：统一选择保存目录，自动处理文件名冲突
-- 🖥️ **动态界面**：可动态添加/删除下载任务
+- 🖥️ **跨平台支持**：支持 Windows、macOS 和 Linux
 - 📊 **进度追踪**：直观的总进度显示
 - 🛡️ **智能文件名**：自动根据记录 ID 生成文件名，并避免覆盖
 
 ## 安装
+
+### Windows
 
 1. 确保已安装 Python 3.8+
 
@@ -19,11 +21,47 @@
 pip install -r requirements.txt
 ```
 
+3. 安装 Playwright 浏览器：
+```bash
+python -m playwright install chromium
+```
+
+### macOS
+
+1. 运行安装脚本：
+```bash
+chmod +x install_mac.sh
+./install_mac.sh
+```
+
+或手动安装：
+```bash
+pip3 install playwright requests
+python3 -m playwright install chromium
+```
+
+### Linux
+
+```bash
+pip3 install playwright requests
+python3 -m playwright install chromium
+```
+
 ## 使用方法
 
-1. 运行程序：
+### Windows
 ```bash
 python main.py
+```
+
+### macOS / Linux
+```bash
+python3 main.py
+```
+
+或使用运行脚本（macOS）：
+```bash
+./run_mac.sh
 ```
 
 2. **添加任务**：

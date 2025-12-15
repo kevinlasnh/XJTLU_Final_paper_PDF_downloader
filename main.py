@@ -1,6 +1,7 @@
 """
 XJTLU PDF Downloader - Batch Version (Playwright-based)
-A GUI tool to batch download PDFs from XJTLU ETD system using browser automation.
+A cross-platform GUI tool to batch download PDFs from XJTLU ETD system.
+Supports Windows, macOS, and Linux.
 """
 
 import tkinter as tk
@@ -8,8 +9,14 @@ from tkinter import ttk, filedialog, messagebox
 import threading
 from pathlib import Path
 import time
+import platform
 from url_parser import parse_viewer_url, validate_url
 from downloader import PDFDownloader, format_file_size
+
+# Platform detection
+IS_MACOS = platform.system() == 'Darwin'
+IS_WINDOWS = platform.system() == 'Windows'
+IS_LINUX = platform.system() == 'Linux'
 
 
 class ScrollableFrame(ttk.Frame):
@@ -35,11 +42,28 @@ class ScrollableFrame(ttk.Frame):
         self.canvas.pack(side="left", fill="both", expand=True)
         self.scrollbar.pack(side="right", fill="y")
         
-        # Bind mouse wheel
-        self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+        # Bind mouse wheel (platform-specific)
+        if IS_MACOS:
+            self.canvas.bind_all("<MouseWheel>", self._on_mousewheel_mac)
+        else:
+            self.canvas.bind_all("<MouseWheel>", self._on_mousewheel)
+            # Linux also uses Button-4/5 for scroll
+            self.canvas.bind_all("<Button-4>", self._on_mousewheel_linux_up)
+            self.canvas.bind_all("<Button-5>", self._on_mousewheel_linux_down)
 
     def _on_mousewheel(self, event):
+        # Windows
         self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+    
+    def _on_mousewheel_mac(self, event):
+        # macOS - delta is already in the right direction
+        self.canvas.yview_scroll(int(-1*event.delta), "units")
+    
+    def _on_mousewheel_linux_up(self, event):
+        self.canvas.yview_scroll(-1, "units")
+    
+    def _on_mousewheel_linux_down(self, event):
+        self.canvas.yview_scroll(1, "units")
 
 
 class PDFDownloaderApp:
@@ -74,10 +98,35 @@ class PDFDownloaderApp:
 
     def setup_styles(self):
         style = ttk.Style()
-        style.configure('Title.TLabel', font=('Microsoft YaHei UI', 16, 'bold'))
-        style.configure('Info.TLabel', font=('Microsoft YaHei UI', 9))
-        style.configure('Action.TButton', font=('Microsoft YaHei UI', 10))
-        style.configure('Primary.TButton', font=('Microsoft YaHei UI', 11, 'bold'))
+        
+        # Cross-platform font selection
+        if IS_MACOS:
+            title_font = ('SF Pro Display', 16, 'bold')
+            info_font = ('SF Pro Text', 11)
+            action_font = ('SF Pro Text', 12)
+            primary_font = ('SF Pro Text', 13, 'bold')
+        elif IS_WINDOWS:
+            title_font = ('Microsoft YaHei UI', 16, 'bold')
+            info_font = ('Microsoft YaHei UI', 9)
+            action_font = ('Microsoft YaHei UI', 10)
+            primary_font = ('Microsoft YaHei UI', 11, 'bold')
+        else:  # Linux
+            title_font = ('DejaVu Sans', 14, 'bold')
+            info_font = ('DejaVu Sans', 9)
+            action_font = ('DejaVu Sans', 10)
+            primary_font = ('DejaVu Sans', 11, 'bold')
+        
+        style.configure('Title.TLabel', font=title_font)
+        style.configure('Info.TLabel', font=info_font)
+        style.configure('Action.TButton', font=action_font)
+        style.configure('Primary.TButton', font=primary_font)
+        
+        # macOS native theme
+        if IS_MACOS:
+            try:
+                style.theme_use('aqua')
+            except:
+                pass
 
     def build_ui(self):
         # Main Padding
