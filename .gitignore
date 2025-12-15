@@ -1,0 +1,38 @@
+# XJTLU PDF Downloader - Ignore File
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+*.spec
+
+# Downloaded files
+downloads/
+*.pdf
+
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
