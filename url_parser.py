@@ -3,6 +3,7 @@ URL Parser for XJTLU ETD PDF Downloader
 Extracts metadata from viewer URLs for filename generation.
 """
 
+from typing import Tuple
 from urllib.parse import urlparse, parse_qs, unquote
 
 
@@ -70,7 +71,7 @@ def parse_viewer_url(viewer_url: str) -> dict:
     return result
 
 
-def validate_url(url: str) -> tuple[bool, str]:
+def validate_url(url: str) -> Tuple[bool, str]:
     """
     Validate if the URL is a valid XJTLU ETD viewer URL.
     
