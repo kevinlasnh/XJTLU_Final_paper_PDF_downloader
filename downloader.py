@@ -60,7 +60,7 @@ class PDFDownloader:
                 'success': False,
                 'file_path': None,
                 'file_size': 0,
-                'error': f"Event loop error: {str(e)}"
+                'error': f"程序内部错误：{str(e)}（请尝试重新运行程序）"
             }
     
     async def _download_async(
@@ -89,7 +89,7 @@ class PDFDownloader:
         browser = None
         
         try:
-            update_status("Starting browser...")
+            update_status("正在启动浏览器...")
             playwright = await async_playwright().start()
             # Use full chromium instead of headless shell to avoid spawn EFTYPE error
             browser = await playwright.chromium.launch(
@@ -119,23 +119,23 @@ class PDFDownloader:
                 if is_pdf and is_api:
                     try:
                         pdf_data = await response.body()
-                        update_status(f"Captured PDF data: {len(pdf_data)} bytes")
+                        update_status(f"已捕获PDF数据: {len(pdf_data)} 字节")
                     except Exception as e:
-                        update_status(f"Failed to capture PDF: {e}")
+                        update_status(f"捕获PDF失败: {e}")
             
             page.on('response', handle_response)
             
-            update_status("Navigating to PDF viewer...")
+            update_status("正在打开PDF查看器页面...")
             
             # Navigate to the viewer page
             response = await page.goto(viewer_url, wait_until='domcontentloaded')
             
             if response and response.status >= 400:
-                result['error'] = f"HTTP error {response.status} when accessing viewer page"
+                result['error'] = f"网络错误 {response.status}：无法访问页面（可能链接已过期或网络有问题）"
                 await context.close()
                 return result
             
-            update_status("Waiting for PDF to load...")
+            update_status("等待PDF加载中...请稍候")
             
             # Wait for PDF.js to load the document
             try:
@@ -153,16 +153,16 @@ class PDFDownloader:
                 if error_wrapper and await error_wrapper.is_visible():
                     error_msg = await page.query_selector('#errorMessage')
                     if error_msg:
-                        result['error'] = f"PDF viewer error: {await error_msg.inner_text()}"
+                        result['error'] = f"PDF查看器报错: {await error_msg.inner_text()}（链接可能已过期）"
                     else:
-                        result['error'] = "PDF viewer reported an error. Link may have expired."
+                        result['error'] = "PDF查看器出错：链接可能已过期，请重新获取新链接"
                     await context.close()
                     return result
                 
                 # Check for common error indicators
                 page_content = await page.content()
                 if 'errorMessage' in page_content and ('expired' in page_content.lower() or 'invalid' in page_content.lower()):
-                    result['error'] = "The PDF link appears to have expired or is invalid."
+                    result['error'] = "链接已过期或无效：请回到ETD网站重新打开PDF并复制新链接"
                     await context.close()
                     return result
                 
@@ -172,11 +172,11 @@ class PDFDownloader:
                 if error_wrapper:
                     error_msg = await page.query_selector('#errorMessage')
                     if error_msg:
-                        result['error'] = f"PDF load error: {await error_msg.inner_text()}"
+                        result['error'] = f"PDF加载错误: {await error_msg.inner_text()}"
                     else:
-                        result['error'] = "Timeout - PDF may have failed to load. Link likely expired."
+                        result['error'] = "超时：PDF加载失败，链接可能已过期。\n❗ 如频繁超时，请尝试关闭VPN/代理后再试"
                 else:
-                    result['error'] = "Timeout waiting for PDF. Link may have expired."
+                    result['error'] = "超时：等待PDF加载超时。\n❗ 如频繁超时，请关闭VPN/梯子/代理后重试"
                 await context.close()
                 return result
             
@@ -184,7 +184,7 @@ class PDFDownloader:
             
             # Save the captured PDF data
             if pdf_data and len(pdf_data) > 1000:  # Valid PDF should be > 1KB
-                update_status("Saving PDF file...")
+                update_status("正在保存PDF文件...")
                 
                 save_path = Path(save_path)
                 save_path.parent.mkdir(parents=True, exist_ok=True)
@@ -197,18 +197,24 @@ class PDFDownloader:
                     result['success'] = True
                     result['file_path'] = str(save_path)
                     result['file_size'] = save_path.stat().st_size
-                    update_status("Download complete!")
+                    update_status("✅ 下载完成！")
                 else:
-                    result['error'] = "PDF file was not saved correctly"
+                    result['error'] = "PDF文件保存失败：文件未正确写入磁盘（请检查磁盘空间和权限）"
             elif pdf_data and len(pdf_data) <= 1000:
-                result['error'] = f"Received invalid PDF data ({len(pdf_data)} bytes). Link may have expired."
+                result['error'] = f"收到无效PDF数据（仅{len(pdf_data)}字节）：链接可能已过期，请重新获取"
             else:
-                result['error'] = "Could not capture PDF data. The link has likely expired - please get a fresh URL from the browser."
+                result['error'] = "无法获取PDF数据：链接很可能已过期，请回到浏览器重新打开PDF并复制新链接"
                 
         except PlaywrightTimeout as e:
-            result['error'] = f"Operation timed out: {str(e)}"
+            result['error'] = f"操作超时：{str(e)}\n\n❗ 如频繁超时，请尝试：\n1. 关闭电脑上的VPN/梯子/代理\n2. 确保网络连接正常\n3. 重新获取新的PDF链接"
         except Exception as e:
-            result['error'] = f"Browser error: {str(e)}"
+            error_msg = str(e)
+            if 'timeout' in error_msg.lower() or 'timed out' in error_msg.lower():
+                result['error'] = f"浏览器超时：{error_msg}\n\n❗ 请关闭VPN/梯子/代理后重试"
+            elif 'network' in error_msg.lower() or 'connection' in error_msg.lower():
+                result['error'] = f"网络错误：{error_msg}\n\n请检查网络连接是否正常"
+            else:
+                result['error'] = f"浏览器错误：{error_msg}"
         finally:
             # Cleanup
             if browser:

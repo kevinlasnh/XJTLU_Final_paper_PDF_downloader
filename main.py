@@ -71,7 +71,7 @@ class PDFDownloaderApp:
     
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("XJTLU PDF Batch Downloader (Playwright)")
+        self.root.title("XJTLU 期末试卷下载器")
         self.root.geometry("700x650")
         self.root.minsize(600, 550)
         
@@ -134,13 +134,13 @@ class PDFDownloaderApp:
         main.pack(fill=tk.BOTH, expand=True)
         
         # Title
-        ttk.Label(main, text="📚 XJTLU PDF Batch Downloader", style='Title.TLabel').pack(pady=(0, 5))
-        ttk.Label(main, text="Add URLs and select save directory for batch download (Playwright-based)", style='Info.TLabel', foreground='gray').pack(pady=(0, 15))
+        ttk.Label(main, text="📚 XJTLU 期末试卷下载器", style='Title.TLabel').pack(pady=(0, 5))
+        ttk.Label(main, text="添加PDF链接，选择保存目录，一键批量下载", style='Info.TLabel', foreground='gray').pack(pady=(0, 15))
         
         # --- URL List Section ---
         header_frame = ttk.Frame(main)
         header_frame.pack(fill=tk.X)
-        ttk.Label(header_frame, text="PDF URLs:", style='Info.TLabel', font=('bold')).pack(side=tk.LEFT)
+        ttk.Label(header_frame, text="PDF链接列表:", style='Info.TLabel', font=('bold')).pack(side=tk.LEFT)
         
         # Scrollable area
         self.scroll_container = ScrollableFrame(main)
@@ -152,20 +152,20 @@ class PDFDownloaderApp:
         
         ttk.Button(
             controls, 
-            text="➕ Add URL", 
+            text="➕ 添加链接", 
             command=self.add_url_field,
             style='Action.TButton'
         ).pack(side=tk.LEFT)
         
         ttk.Button(
             controls,
-            text="🗑️ Clear All",
+            text="🗑️ 清空全部",
             command=self.clear_urls,
             style='Action.TButton'
         ).pack(side=tk.LEFT, padx=10)
 
         # --- Output Directory Section ---
-        dir_frame = ttk.LabelFrame(main, text="Save Location", padding="10")
+        dir_frame = ttk.LabelFrame(main, text="保存位置", padding="10")
         dir_frame.pack(fill=tk.X, pady=(0, 15))
         
         dir_entry = ttk.Entry(dir_frame, textvariable=self.target_dir, state='readonly')
@@ -173,17 +173,17 @@ class PDFDownloaderApp:
         
         ttk.Button(
             dir_frame, 
-            text="📂 Browse...", 
+            text="📂 浏览...", 
             command=self.browse_directory
         ).pack(side=tk.RIGHT)
 
         # --- Options Section ---
-        options_frame = ttk.LabelFrame(main, text="Options", padding="10")
+        options_frame = ttk.LabelFrame(main, text="设置", padding="10")
         options_frame.pack(fill=tk.X, pady=(0, 15))
         
         ttk.Checkbutton(
             options_frame,
-            text="Headless mode (hide browser window)",
+            text="后台模式（隐藏浏览器窗口）",
             variable=self.headless_var
         ).pack(anchor=tk.W)
 
@@ -200,13 +200,13 @@ class PDFDownloaderApp:
         )
         self.total_progress.pack(fill=tk.X, pady=(0, 5))
         
-        self.status_label = ttk.Label(self.progress_frame, text="Ready", style='Info.TLabel')
+        self.status_label = ttk.Label(self.progress_frame, text="就绪，等待开始...", style='Info.TLabel')
         self.status_label.pack(anchor=tk.W)
 
         # --- Main Action Button ---
         self.download_btn = ttk.Button(
             main,
-            text="🚀 Start Batch Download",
+            text="🚀 开始批量下载",
             style='Primary.TButton',
             command=self.start_batch_download
         )
@@ -288,7 +288,7 @@ class PDFDownloaderApp:
         # 1. Validate Target Directory
         target_path_str = self.target_dir.get()
         if not target_path_str:
-            messagebox.showwarning("Notice", "Please select a save directory first!")
+            messagebox.showwarning("提示", "请先选择保存目录！\n\n点击\u201c浏览...\u201d按钮选择你想要保存PDF的文件夹")
             return
         
         target_path = Path(target_path_str)
@@ -296,7 +296,7 @@ class PDFDownloaderApp:
             try:
                 target_path.mkdir(parents=True, exist_ok=True)
             except Exception as e:
-                messagebox.showerror("Error", f"Cannot create directory: {e}")
+                messagebox.showerror("错误", f"无法创建目录：{e}\n\n请检查路径是否正确，或选择其他位置")
                 return
 
         # 2. Collect Valid URLs
@@ -307,7 +307,7 @@ class PDFDownloaderApp:
                 urls_to_process.append(url)
         
         if not urls_to_process:
-            messagebox.showwarning("Notice", "Please enter at least one URL!")
+            messagebox.showwarning("提示", "请至少输入一个URL链接！\n\n点击\u201c添加链接\u201d按钮，然后粘贴从浏览器复制的PDF链接")
             return
 
         # 3. Start Thread
@@ -338,19 +338,19 @@ class PDFDownloaderApp:
             for index, url in enumerate(urls):
                 current_num = index + 1
                 self.root.after(0, lambda idx=current_num, tot=total_count: 
-                                self.update_status(f"Processing {idx}/{tot}...", 'blue'))
+                                self.update_status(f"正在处理 {idx}/{tot}...", 'blue'))
                 
                 # Step 1: Validate & Parse
                 is_valid, err_msg = validate_url(url)
                 if not is_valid:
                     fail_count += 1
-                    errors.append(f"URL {current_num}: Invalid format - {err_msg}")
+                    errors.append(f"第{current_num}个链接: {err_msg}")
                     continue
 
                 parse_res = parse_viewer_url(url)
                 if not parse_res['success']:
                     fail_count += 1
-                    errors.append(f"URL {current_num}: Parse failed - {parse_res['error']}")
+                    errors.append(f"第{current_num}个链接: {parse_res['error']}")
                     continue
 
                 # Step 2: Determine Filename
@@ -374,7 +374,7 @@ class PDFDownloaderApp:
                     success_count += 1
                 else:
                     fail_count += 1
-                    errors.append(f"URL {current_num}: Download failed - {result['error']}")
+                    errors.append(f"第{current_num}个链接下载失败: {result['error']}")
                 
                 # Update Progress Bar
                 progress = (current_num / total_count) * 100
@@ -384,20 +384,24 @@ class PDFDownloaderApp:
                 time.sleep(1)
                 
         except Exception as e:
-            errors.append(f"Batch error: {str(e)}")
+            errors.append(f"批量处理出错: {str(e)}")
 
         # Finished
         self.is_downloading = False
         
-        result_msg = f"Batch complete!\nSuccess: {success_count}\nFailed: {fail_count}"
+        result_msg = f"批量下载完成！\n\n✅ 成功: {success_count} 个\n❌ 失败: {fail_count} 个"
         if errors:
-            result_msg += "\n\nError details:\n" + "\n".join(errors[:5])
+            result_msg += "\n\n—————— 错误详情 ——————\n" + "\n".join(errors[:5])
             if len(errors) > 5:
-                result_msg += "\n..."
+                result_msg += f"\n...还有{len(errors)-5}个错误未显示"
+        
+        # Add VPN tip if there are timeout errors
+        if any('超时' in e or 'timeout' in e.lower() for e in errors):
+            result_msg += "\n\n❗ 提示：如频繁超时，请关闭VPN/梯子/代理后重试"
 
         self.root.after(0, lambda: self.download_btn.configure(state='normal'))
-        self.root.after(0, lambda: self.update_status("All tasks completed", 'green'))
-        self.root.after(0, lambda: messagebox.showinfo("Batch Download Report", result_msg))
+        self.root.after(0, lambda: self.update_status("全部任务已完成", 'green'))
+        self.root.after(0, lambda: messagebox.showinfo("批量下载报告", result_msg))
 
     def on_closing(self):
         """Cleanup when window is closed."""
