@@ -134,6 +134,16 @@ XJTLU_Final_paper_PDF_downloader/
 - Tkinter (跨平台 GUI)
 - Playwright (浏览器自动化)
 
+## 遇到问题？
+
+如果遇到个别复杂问题导致程序无法正常运行，请：
+
+1. **查看错误提示**：程序会用中文详细说明问题原因和解决方案
+2. **GitHub Issue**：在[项目 Issues](https://github.com/kevinlasnh/XJTLU_Final_paper_PDF_downloader/issues)中留言描述问题
+3. **询问 Agent**：你也可以询问我（Copilot），我会尽力帮助解决
+
+遇事不决，记得先关闭 VPN/梯子/代理再试一次 😄
+
 ## License
 
 MIT License
