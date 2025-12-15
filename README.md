@@ -146,4 +146,18 @@ XJTLU_Final_paper_PDF_downloader/
 
 ## License
 
-MIT License
+本项目采用 **MIT License + Non-Commercial Clause** 双重许可模式：
+
+### ✅ 你可以：
+- 自由使用、学习、修改这个项目
+- 用于个人用途、教学、研究
+- 在同样遵循此协议的前提下分发修改版本
+
+### ❌ 你不可以：
+- 直接用于商业目的（销售、收费服务等）
+- 将其作为商业产品的核心功能
+
+### 💼 商业用途：
+如需商业使用本项目，**请联系开发者** (kevinlasnh) 获得商业许可证。
+
+详见 [LICENSE](LICENSE) 文件。
