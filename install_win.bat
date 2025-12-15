@@ -1,8 +1,13 @@
 @echo off
 REM XJTLU PDF Downloader - Windows Installation Script
+REM Change to script directory (works when double-clicked from any location)
+cd /d "%~dp0"
+
 echo ==========================================
 echo XJTLU PDF Downloader - Windows Setup
 echo ==========================================
+echo Working directory: %CD%
+echo.
 
 REM Check Python
 python --version >nul 2>&1

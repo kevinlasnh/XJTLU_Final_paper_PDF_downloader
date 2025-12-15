@@ -1,9 +1,15 @@
 #!/bin/bash
 # XJTLU PDF Downloader - macOS Installation Script
 
+# Change to script directory (works when run from any location)
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+cd "$SCRIPT_DIR"
+
 echo "=========================================="
 echo "XJTLU PDF Downloader - macOS Setup"
 echo "=========================================="
+echo "Working directory: $PWD"
+echo ""
 
 # Check if Python 3 is installed
 if ! command -v python3 &> /dev/null; then
@@ -26,7 +32,11 @@ echo "✅ pip3 found"
 # Install dependencies
 echo ""
 echo "📦 Installing dependencies..."
-pip3 install --user playwright requests
+if [ -f "requirements.txt" ]; then
+    pip3 install --user -r requirements.txt
+else
+    pip3 install --user playwright requests
+fi
 
 # Install Playwright browsers
 echo ""
