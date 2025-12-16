@@ -82,6 +82,7 @@ XJTLU ETD 系统只允许在线查看 PDF 试卷，**不提供直接下载功能
 - 📊 **进度追踪**：直观的总进度显示
 - 🛡️ **智能文件名**：自动根据记录 ID 生成文件名，并避免覆盖
 - 🌐 **浏览器自动化**：使用 Playwright 绕过 IP 验证限制
+- 💻 **双版本支持**：提供 GUI 图形界面和 CLI 命令行两种版本
 
 ## 快速开始
 
@@ -97,27 +98,35 @@ run_win.bat
 
 ### macOS
 
+**GUI 版本** (需要 Tkinter):
 ```bash
-# 安装
-chmod +x install_mac.sh
-./install_mac.sh
-
-# 运行
-chmod +x run_mac.sh
+chmod +x install_mac.sh && ./install_mac.sh
 ./run_mac.sh
 ```
 
+**CLI 命令行版本** (推荐 - 依赖更少):
+```bash
+chmod +x install_mac_cli.sh && ./install_mac_cli.sh
+./run_mac_cli.sh
+```
+
+> 💡 如果 GUI 版本安装遇到 Tkinter 依赖问题，推荐使用 CLI 版本
+
 ### Linux
 
+**GUI 版本** (需要 Tkinter):
 ```bash
-# 安装
-chmod +x install_linux.sh
-./install_linux.sh
-
-# 运行
-chmod +x run_linux.sh
+chmod +x install_linux.sh && ./install_linux.sh
 ./run_linux.sh
 ```
+
+**CLI 命令行版本** (推荐 - 依赖更少):
+```bash
+chmod +x install_linux_cli.sh && ./install_linux_cli.sh
+./run_linux_cli.sh
+```
+
+> 💡 如果 GUI 版本安装遇到 Tkinter 依赖问题，推荐使用 CLI 版本
 
 ## 系统兼容性测试状态
 
@@ -151,6 +160,8 @@ python -m playwright install-deps chromium
 
 ## 使用方法
 
+### GUI 版本
+
 1. **启动程序**：运行对应平台的脚本或 `python main.py`
 
 2. **添加任务**：
@@ -165,6 +176,34 @@ python -m playwright install-deps chromium
    - 点击 "🚀 Start Batch Download"
    - 程序将自动处理所有链接并将文件保存到指定目录
 
+### CLI 命令行版本
+
+**交互模式** (适合少量下载):
+```bash
+python3 cli.py
+# 按提示输入 URL，输入 'q' 退出
+```
+
+**参数模式** (适合批量下载):
+```bash
+# 下载单个文件
+python3 cli.py -u "https://etd.xjtlu.edu.cn/..."
+
+# 批量下载多个文件
+python3 cli.py -u "URL1" -u "URL2" -u "URL3"
+
+# 指定输出目录
+python3 cli.py -u "URL" -o ~/Downloads/papers
+
+# 从文件读取 URL (每行一个)
+python3 cli.py -f urls.txt
+```
+
+**更多选项**:
+```bash
+python3 cli.py --help
+```
+
 ## URL 格式示例
 
 程序支持如下格式的 URL：
@@ -178,16 +217,21 @@ https://etd.xjtlu.edu.cn/static/readonline/web/viewer.html?file=%2Fapi%2Fv1%2FFi
 ```
 XJTLU_Final_paper_PDF_downloader/
 ├── main.py              # GUI 主程序
+├── cli.py               # CLI 命令行程序
 ├── downloader.py        # Playwright 下载核心
 ├── url_parser.py        # URL 解析器
 ├── test_download.py     # 命令行测试脚本
 ├── requirements.txt     # Python 依赖
-├── install_win.bat      # Windows 安装脚本
-├── install_mac.sh       # macOS 安装脚本
-├── install_linux.sh     # Linux 安装脚本
+├── install_win.bat      # Windows GUI 安装脚本
+├── install_mac.sh       # macOS GUI 安装脚本
+├── install_mac_cli.sh   # macOS CLI 安装脚本
+├── install_linux.sh     # Linux GUI 安装脚本
+├── install_linux_cli.sh # Linux CLI 安装脚本
 ├── run_win.bat          # Windows 运行脚本
-├── run_mac.sh           # macOS 运行脚本
-├── run_linux.sh         # Linux 运行脚本
+├── run_mac.sh           # macOS GUI 运行脚本
+├── run_mac_cli.sh       # macOS CLI 运行脚本
+├── run_linux.sh         # Linux GUI 运行脚本
+├── run_linux_cli.sh     # Linux CLI 运行脚本
 └── README.md            # 说明文档
 ```
 
