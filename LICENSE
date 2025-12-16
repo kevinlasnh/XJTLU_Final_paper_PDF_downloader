@@ -1,42 +1,256 @@
-MIT License with Non-Commercial Clause
+# DUAL LICENSE AGREEMENT
 
-Copyright (c) 2025 kevinlasnh
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-1. The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-2. NON-COMMERCIAL USE CLAUSE:
-The Software may be used, modified, and distributed freely for non-commercial
-purposes only (including personal, educational, and research use).
-
-For commercial use, direct commercial licensing, or other commercial purposes,
-you must contact the copyright holder (kevinlasnh) to obtain explicit written
-permission and may need to negotiate separate licensing terms.
-
-3. Commercial Use Definition:
-"Commercial Use" includes, but is not limited to:
-- Selling, licensing, or renting the Software or derivative works
-- Using the Software as part of a commercial product or service for profit
-- Using the Software to provide paid services
-- Distributing the Software as part of a commercial offering
-- Any use primarily intended for commercial advantage or profit
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Copyright (c) 2025 Pengkai Chen  
+All rights reserved.
 
 ---
 
-For commercial licensing inquiries, please contact: kevinlasnh@gmail.com
-(Replace with your actual contact email if different)
+## OVERVIEW
+
+This software is available under two separate licensing options:
+
+1. **GNU Affero General Public License v3.0 (AGPL-3.0)** - For open source and non-commercial use
+2. **Commercial License** - For proprietary and commercial use
+
+You must choose one of these licenses before using this software.
+
+---
+
+## OPTION 1: AGPL-3.0 LICENSE (Open Source / Non-Commercial)
+
+### Permitted Use
+
+You may use this software **FREE OF CHARGE** under AGPL-3.0 for:
+
+- ✅ Personal learning and research
+- ✅ Educational purposes
+- ✅ Non-profit organizations
+- ✅ Open source projects that comply with AGPL-3.0
+- ✅ Academic research and publications
+
+### Requirements
+
+If you use this software under AGPL-3.0, you **MUST**:
+
+1. **Preserve Copyright**: Keep all copyright notices intact
+2. **Disclose Source**: Make your complete source code available
+3. **Same License**: License your entire work under AGPL-3.0
+4. **State Changes**: Document any modifications you make
+5. **Network Use**: If you run this software on a server/network, provide source code access to all users
+
+### Important AGPL-3.0 Restrictions
+
+- You **CANNOT** use this software in proprietary/closed-source applications
+- You **CANNOT** provide this as a service without disclosing your source code
+- Any modifications or derivative works **MUST** also be licensed under AGPL-3.0
+- Network/SaaS deployment requires making your full source code available
+
+**Full AGPL-3.0 License Text**: https://www.gnu.org/licenses/agpl-3.0.html
+
+---
+
+## OPTION 2: COMMERCIAL LICENSE
+
+### When You Need a Commercial License
+
+A commercial license is **REQUIRED** if you:
+
+- ❌ Use this software in a **closed-source/proprietary** application
+- ❌ Incorporate it into **commercial products or services**
+- ❌ Offer it as a **SaaS/cloud service** without source disclosure
+- ❌ Use it in **internal business operations** (more than 5 users)
+- ❌ Embed it in **hardware or IoT devices** for sale
+- ❌ Distribute it as part of **paid software packages**
+- ❌ Do not want to comply with AGPL-3.0 requirements
+
+### Commercial License Benefits
+
+With a commercial license, you get:
+
+✓ **No Source Code Disclosure** - Keep your code proprietary  
+✓ **No Copyleft Requirements** - No AGPL obligations  
+✓ **Flexible Integration** - Use in any product or service  
+✓ **Commercial Distribution Rights** - Sell products using this software  
+✓ **Perpetual License** - One-time payment for specified version  
+✓ **Priority Support** - Available with premium tiers  
+✓ **Legal Protection** - Proper licensing reduces liability  
+
+### How to Obtain a Commercial License
+
+**Contact Information:**
+
+- 📧 **Email**: Kevinlasnh@outlook.com
+- 📞 **Phone**: +86 135-9049-3083
+- 💬 **GitHub**: Open an issue with label `commercial-license`
+
+**Information to provide:**
+
+1. Your company name and contact details
+2. Intended use case and deployment scope
+3. Expected number of users/installations
+4. Timeline for implementation
+
+**Licensing Process:**
+
+1. **Submit inquiry** via email or GitHub issue with your use case
+2. **Receive quote** within 2-3 business days
+3. **Review and sign** license agreement
+4. **Make payment** as agreed
+5. **Receive license certificate** and commercial use authorization
+
+### Pricing Structure
+
+Pricing is determined based on:
+
+- Number of developers using the software
+- Number of end users or installations
+- Type of product or service deployment
+- Required support level
+
+**Contact Pengkai Chen at Kevinlasnh@outlook.com for a customized quote.**
+
+---
+
+## PROHIBITED USES WITHOUT COMMERCIAL LICENSE
+
+The following uses are **STRICTLY PROHIBITED** without a valid commercial license:
+
+1. Using this software in any product or service that generates revenue
+2. Offering this software as part of a paid subscription or service
+3. Using this software in enterprise/business environments beyond evaluation
+4. Distributing this software as part of commercial hardware
+5. Creating derivative works for commercial purposes
+6. Removing or obscuring license notices to avoid compliance
+
+**Violation of these terms may result in:**
+- Immediate license termination
+- Legal action for copyright infringement
+- Claims for damages and lost licensing fees
+- Injunctive relief
+
+---
+
+## LICENSE SELECTION FLOWCHART
+
+**Are you making money from software using this code?**  
+└─ **YES** → You need a **Commercial License**  
+└─ **NO** → Continue below
+
+**Will you make your entire application open source (AGPL-3.0)?**  
+└─ **YES** → You can use **AGPL-3.0 License** (free)  
+└─ **NO** → You need a **Commercial License**
+
+**Still unsure?** → Contact Kevinlasnh@outlook.com
+
+---
+
+## INTELLECTUAL PROPERTY RIGHTS
+
+This software and all associated documentation, code, and materials are the exclusive property of Pengkai Chen. All rights not expressly granted under the chosen license are reserved.
+
+### Copyright Protection
+
+- **Copyright Owner**: Pengkai Chen
+- **Year**: 2025
+- **Contact**: Kevinlasnh@outlook.com
+
+### Trademarks
+
+Any trademarks or service marks associated with this software remain the property of Pengkai Chen. Use of these marks requires separate written permission.
+
+---
+
+## ENFORCEMENT AND COMPLIANCE
+
+### License Audits
+
+Commercial license holders may be subject to periodic audits to ensure compliance with license terms.
+
+### Termination
+
+Licenses may be terminated immediately upon breach of terms. Upon termination:
+- You must cease all use of the software
+- Destroy all copies in your possession
+- Provide written confirmation of compliance
+
+### Governing Law
+
+This agreement is governed by the laws of the People's Republic of China, without regard to conflict of law principles. Any disputes shall be resolved through negotiation or, if necessary, through the courts of competent jurisdiction.
+
+---
+
+## WARRANTY DISCLAIMER
+
+**THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE".**
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW:
+
+- ❌ **NO WARRANTIES** of any kind, express or implied
+- ❌ **NO GUARANTEE** of merchantability or fitness for purpose
+- ❌ **NO ASSURANCE** of error-free or uninterrupted operation
+- ❌ **NO LIABILITY** for data loss, system failures, or business interruption
+
+**USE AT YOUR OWN RISK.**
+
+---
+
+## LIMITATION OF LIABILITY
+
+**IN NO EVENT SHALL PENGKAI CHEN BE LIABLE FOR:**
+
+- Direct, indirect, incidental, or consequential damages
+- Loss of profits, data, or business opportunities
+- Cost of procurement of substitute goods or services
+- Any damages exceeding the license fee paid (for commercial licenses)
+
+This limitation applies even if advised of the possibility of such damages.
+
+---
+
+## THIRD-PARTY COMPONENTS
+
+This software may include third-party libraries or components. Each component is subject to its own license terms. See the project documentation or source code for details on third-party dependencies and their respective licenses.
+
+---
+
+## CONTACT INFORMATION
+
+**For Licensing Inquiries:**
+- **Name**: Pengkai Chen
+- **Email**: Kevinlasnh@outlook.com
+- **Phone**: +86 135-9049-3083
+
+**For Technical Support (Commercial License Holders):**
+- **Email**: Kevinlasnh@outlook.com
+
+**For General Questions:**
+- GitHub Issues: Use the issue tracker in the project repository
+- Email: Kevinlasnh@outlook.com
+
+---
+
+## ACCEPTANCE OF TERMS
+
+**BY USING THIS SOFTWARE, YOU ACKNOWLEDGE THAT:**
+
+1. You have read and understood this license agreement
+2. You agree to be bound by the terms of your chosen license
+3. You understand that commercial use requires a paid license
+4. Unauthorized commercial use constitutes copyright infringement
+
+**If you do not agree to these terms, you are not authorized to use this software.**
+
+---
+
+## VERSION HISTORY
+
+- **Version 1.0** - December 15, 2025 - Initial dual license release
+
+---
+
+**© 2025 Pengkai Chen. All rights reserved.**
+
+For the complete AGPL-3.0 license text, visit:  
+https://www.gnu.org/licenses/agpl-3.0.html
+
+**This is a legally binding agreement. For commercial use, contact Pengkai Chen at Kevinlasnh@outlook.com before deployment.**
