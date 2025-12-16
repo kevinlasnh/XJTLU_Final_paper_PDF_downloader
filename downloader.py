@@ -148,23 +148,26 @@ class PDFDownloader:
                 # Additional wait for any late network requests
                 await asyncio.sleep(2)
                 
-                # Check if there's an error message in the viewer
-                error_wrapper = await page.query_selector('.errorWrapper')
-                if error_wrapper and await error_wrapper.is_visible():
-                    error_msg = await page.query_selector('#errorMessage')
-                    if error_msg:
-                        result['error'] = f"PDF查看器报错: {await error_msg.inner_text()}（链接可能已过期）"
-                    else:
-                        result['error'] = "PDF查看器出错：链接可能已过期，请重新获取新链接"
-                    await context.close()
-                    return result
-                
-                # Check for common error indicators
-                page_content = await page.content()
-                if 'errorMessage' in page_content and ('expired' in page_content.lower() or 'invalid' in page_content.lower()):
-                    result['error'] = "链接已过期或无效：请回到ETD网站重新打开PDF并复制新链接"
-                    await context.close()
-                    return result
+                # Only check for errors if we haven't captured PDF data yet
+                # If PDF data is already captured, we can skip error checking
+                if not pdf_data or len(pdf_data) < 1000:
+                    # Check if there's an error message in the viewer
+                    error_wrapper = await page.query_selector('.errorWrapper')
+                    if error_wrapper and await error_wrapper.is_visible():
+                        error_msg = await page.query_selector('#errorMessage')
+                        if error_msg:
+                            result['error'] = f"PDF查看器报错: {await error_msg.inner_text()}（链接可能已过期）"
+                        else:
+                            result['error'] = "PDF查看器出错：链接可能已过期，请重新获取新链接"
+                        await context.close()
+                        return result
+                    
+                    # Check for common error indicators
+                    page_content = await page.content()
+                    if 'errorMessage' in page_content and ('expired' in page_content.lower() or 'invalid' in page_content.lower()):
+                        result['error'] = "链接已过期或无效：请回到ETD网站重新打开PDF并复制新链接"
+                        await context.close()
+                        return result
                 
             except PlaywrightTimeout:
                 # Check for error messages in the viewer
