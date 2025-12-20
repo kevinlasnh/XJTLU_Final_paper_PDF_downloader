@@ -1,5 +1,14 @@
 # XJTLU 期末考试卷下载器
 
+> [!CAUTION]
+> **⚠️ 维护公告 / MAINTENANCE NOTICE**
+>
+> **软件目前出现新的 Bug 导致无法正常下载 PDF，暂时无法使用。**
+> 
+> 开发者会在有空时进行维护修复。请耐心等待。
+> 
+> *The software is currently broken and cannot download PDFs. Maintenance is pending.*
+
 从 XJTLU ETD 系统批量下载期末考试卷 PDF 的跨平台工具。
 
 > 🎓 专为西交利物浦大学学生设计，帮助快速下载历年期末考试真题进行复习备考。
