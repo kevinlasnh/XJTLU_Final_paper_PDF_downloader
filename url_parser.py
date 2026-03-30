@@ -1,107 +1,38 @@
 """
-URL Parser for XJTLU ETD PDF Downloader
-Extracts metadata from viewer URLs for filename generation.
+Legacy compatibility wrapper for URL parsing.
 """
 
+import sys
+from pathlib import Path
 from typing import Tuple
-from urllib.parse import urlparse, parse_qs, unquote
+
+SRC_DIR = Path(__file__).resolve().parent / "src"
+if str(SRC_DIR) not in sys.path:
+    sys.path.insert(0, str(SRC_DIR))
+
+from xjtlu_downloader.core.url_parser import parse_viewer_url as parse_viewer_url_model
+from xjtlu_downloader.core.url_parser import validate_url as validate_url_impl
 
 
 def parse_viewer_url(viewer_url: str) -> dict:
-    """
-    Parse the XJTLU ETD viewer URL and extract metadata.
-    
-    With the Playwright approach, we don't need to construct the PDF API URL
-    ourselves - the browser will handle that. We just extract metadata for
-    filename generation.
-    
-    Args:
-        viewer_url: The full viewer URL containing the file parameter
-        
-    Returns:
-        dict with keys:
-            - viewer_url: The original viewer URL (cleaned)
-            - record_id: The document record ID (for filename)
-            - db_code: The database code (e.g., EXAMXJTLU)
-            - success: Boolean indicating if parsing was successful
-            - error: Error message if parsing failed
-    """
-    result = {
-        'viewer_url': None,
-        'record_id': None,
-        'db_code': None,
-        'success': False,
-        'error': None
-    }
-    
-    try:
-        # Clean the URL (remove fragment like #page=1&zoom=...)
-        clean_url = viewer_url.split('#')[0].strip()
-        result['viewer_url'] = clean_url
-        
-        # Parse the main URL
-        parsed = urlparse(clean_url)
-        
-        # Get query parameters from the viewer URL
-        query_params = parse_qs(parsed.query)
-        
-        # The 'file' parameter contains the encoded PDF API path
-        if 'file' not in query_params:
-            result['error'] = "链接不完整：缺少 'file' 参数（请确保复制的是完整的浏览器地址栏链接）"
-            return result
-        
-        # Decode the file parameter to extract record info
-        file_param = query_params['file'][0]
-        decoded_file_path = unquote(file_param)
-        
-        # Extract record info from the decoded path
-        file_parsed = urlparse(decoded_file_path)
-        file_query = parse_qs(file_parsed.query)
-        
-        if 'recordId' in file_query:
-            result['record_id'] = file_query['recordId'][0]
-        if 'dbCode' in file_query:
-            result['db_code'] = file_query['dbCode'][0]
-        
-        result['success'] = True
-        
-    except Exception as e:
-        result['error'] = f"链接解析出错：{str(e)}（链接格式可能有问题，请重新复制）"
-    
-    return result
+    """Keep the old dict-based interface while delegating to the new core."""
+    return parse_viewer_url_model(viewer_url).to_legacy_dict()
 
 
 def validate_url(url: str) -> Tuple[bool, str]:
-    """
-    Validate if the URL is a valid XJTLU ETD viewer URL.
-    
-    Args:
-        url: The URL to validate
-        
-    Returns:
-        tuple of (is_valid, error_message)
-    """
-    if not url or not url.strip():
-        return False, "请输入URL链接（你还没有粘贴任何链接哦）"
-    
-    url = url.strip()
-    
-    if not url.startswith('http'):
-        return False, "链接格式错误：必须以 http:// 或 https:// 开头（你可能复制错了）"
-    
-    if 'etd.xjtlu.edu.cn' not in url:
-        return False, "链接来源错误：必须是 etd.xjtlu.edu.cn 网站的链接（请从西浦ETD系统复制）"
-    
-    if 'viewer.html' not in url and 'file=' not in url:
-        return False, "链接类型错误：这不是PDF查看器的链接（请在查看PDF时复制浏览器地址栏的完整链接）"
-    
-    return True, ""
+    """Keep the old tuple-based interface while delegating to the new core."""
+    return validate_url_impl(url)
 
 
 if __name__ == "__main__":
-    # Test with sample URL
-    test_url = "https://etd.xjtlu.edu.cn/static/readonline/web/viewer.html?file=%2Fapi%2Fv1%2FFile%2FBrowserFile%3FdbCode%3DEXAMXJTLU%26recordId%3D15798%26dbId%3D3%26flag%3D0%26timestamp%3D1765788896%26signature%3D94adec6e1c4211f29b92eeb00b4c1b358127bbac3601581d378bbbdda885af13%26clientIp%3D180.208.58.213#page=1&zoom=auto"
-    
+    test_url = (
+        "https://etd.xjtlu.edu.cn/static/readonline/web/viewer.html?"
+        "file=%2Fapi%2Fv1%2FFile%2FBrowserFile%3FdbCode%3DEXAMXJTLU"
+        "%26recordId%3D15798%26dbId%3D3%26flag%3D0%26timestamp%3D1765788896"
+        "%26signature%3D94adec6e1c4211f29b92eeb00b4c1b358127bbac3601581d378bbbdda885af13"
+        "%26clientIp%3D180.208.58.213#page=1&zoom=auto"
+    )
+
     result = parse_viewer_url(test_url)
     print("Parse Result:")
     print(f"  Success: {result['success']}")

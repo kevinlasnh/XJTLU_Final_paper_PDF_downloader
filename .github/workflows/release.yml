@@ -1,0 +1,59 @@
+name: Release Portable Desktop App
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            asset_name: XJTLU-PDF-Downloader-win-x64.zip
+            build_command: powershell -ExecutionPolicy Bypass -File scripts/build_portable_win.ps1
+          - os: macos-13
+            asset_name: XJTLU-PDF-Downloader-macos-x64.zip
+            build_command: bash scripts/build_portable_macos.sh XJTLU-PDF-Downloader-macos-x64.zip
+          - os: macos-14
+            asset_name: XJTLU-PDF-Downloader-macos-arm64.zip
+            build_command: bash scripts/build_portable_macos.sh XJTLU-PDF-Downloader-macos-arm64.zip
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build portable package
+        run: ${{ matrix.build_command }}
+
+      - name: Upload workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.asset_name }}
+          path: dist/release/${{ matrix.asset_name }}
+
+      - name: Create release if missing
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: |
+          gh release view "${GITHUB_REF_NAME}" >/dev/null 2>&1 || \
+          gh release create "${GITHUB_REF_NAME}" --title "${GITHUB_REF_NAME}" --notes ""
+
+      - name: Upload release asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: bash
+        run: gh release upload "${GITHUB_REF_NAME}" "dist/release/${{ matrix.asset_name }}" --clobber

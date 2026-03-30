@@ -1,17 +1,10 @@
 # XJTLU 期末考试卷下载器
 
-> [!CAUTION]
-> **⚠️ 维护公告 / MAINTENANCE NOTICE**
->
-> **软件目前出现新的 Bug 导致无法正常下载 PDF，暂时无法使用。**
-> 
-> 开发者会在有空时进行维护修复。请耐心等待。
-> 
-> *The software is currently broken and cannot download PDFs. Maintenance is pending.*
+从 XJTLU ETD 系统批量下载期末考试卷 PDF 的桌面工具。
 
-从 XJTLU ETD 系统批量下载期末考试卷 PDF 的跨平台工具。
+当前主线版本已经重构为 **PySide6 桌面 GUI + Playwright 下载内核**，目标是通过 GitHub Releases 提供可直接解压运行的便携程序包。
 
-> 🎓 专为西交利物浦大学学生设计，帮助快速下载历年期末考试真题进行复习备考。
+> 适用场景：先在程序内完成一次 ETD 登录，然后批量保存自己有权限访问的历年期末试卷 PDF。
 
 ## 问题背景 ❓
 
@@ -84,75 +77,58 @@ XJTLU ETD 系统只允许在线查看 PDF 试卷，**不提供直接下载功能
 
 ## 功能特点
 
-- 📝 **期末考试卷下载**：支持从 XJTLU ETD 系统下载历年期末试卷
-- 🚀 **批量处理**：支持同时添加多个试卷链接进行下载
-- 📂 **目录管理**：统一选择保存目录，自动处理文件名冲突
-- 🖥️ **跨平台支持**：支持 Windows、macOS 和 Linux
-- 📊 **进度追踪**：直观的总进度显示
-- 🛡️ **智能文件名**：自动根据记录 ID 生成文件名，并避免覆盖
-- 🌐 **浏览器自动化**：使用 Playwright 绕过 IP 验证限制
-- 💻 **双版本支持**：提供 GUI 图形界面和 CLI 命令行两种版本
+- 桌面 GUI：基于 PySide6，提供任务表格、日志面板和保存目录管理
+- 批量下载：支持一次导入多条 PDF Viewer 链接并顺序处理
+- 会话复用：程序自管 ETD 登录会话，避免每次都重新认证
+- 交互优化：支持回车直接添加、剪贴板批量导入、重复链接自动跳过
+- 文件安全：自动生成文件名并处理重名冲突
+- 便携发布：支持通过 GitHub Releases 下载 Windows / macOS 便携包
+- CLI 兼容：保留原有 CLI 和旧入口兼容层，方便逐步迁移
 
 ## 快速开始
 
 ### Windows
 
 ```bash
-# 安装 (双击或命令行运行)
-install_win.bat
+# 方式 1：从 GitHub Releases 下载 zip，解压后直接运行 exe
 
-# 运行 (双击或命令行运行)
+# 方式 2：本地源码运行
+install_win.bat
 run_win.bat
 ```
 
 ### macOS
 
-**GUI 版本** (需要 Tkinter):
 ```bash
 chmod +x install_mac.sh && ./install_mac.sh
 ./run_mac.sh
 ```
 
-**CLI 命令行版本** (推荐 - 依赖更少):
-```bash
-chmod +x install_mac_cli.sh && ./install_mac_cli.sh
-./run_mac_cli.sh
-```
+### GitHub Release 便携包
 
-> 💡 如果 GUI 版本安装遇到 Tkinter 依赖问题，推荐使用 CLI 版本
+- Windows: `XJTLU-PDF-Downloader-win-x64.zip`
+- macOS Intel: `XJTLU-PDF-Downloader-macos-x64.zip`
+- macOS Apple Silicon: `XJTLU-PDF-Downloader-macos-arm64.zip`
 
-### Linux
-
-**GUI 版本** (需要 Tkinter):
-```bash
-chmod +x install_linux.sh && ./install_linux.sh
-./run_linux.sh
-```
-
-**CLI 命令行版本** (推荐 - 依赖更少):
-```bash
-chmod +x install_linux_cli.sh && ./install_linux_cli.sh
-./run_linux_cli.sh
-```
-
-> 💡 如果 GUI 版本安装遇到 Tkinter 依赖问题，推荐使用 CLI 版本
+> 当前本地已验证 Windows 开发态与便携版启动；macOS 构建链路已接入 release workflow，但尚未在本地实机完成验收。
 
 ## 系统兼容性测试状态
 
 | 平台 | 状态 | 说明 |
 |------|------|------|
-| **Windows** | ✅ 已测试 | 在 Windows 系统上进行了实机测试，功能正常 |
-| **macOS** | ⚠️ 未测试 | 代码支持 macOS，但未在实机上测试过。如有问题请反馈 |
-| **Linux** | ⚠️ 未测试 | 代码支持 Linux，但未在实机上测试过。如有问题请反馈 |
+| **Windows** | ✅ 已测试 | 已验证源码运行、GUI 主流程和便携版 `.exe` 启动 |
+| **macOS** | ⚠️ 部分验证 | 已接入自动构建脚本和 release workflow，尚未本地实机验收 |
+| **Linux** | ⚠️ 未作为主发布目标 | 保留源码运行脚本，但当前 release 不提供 Linux 便携包 |
 
-> 💡 虽然 macOS 和 Linux 版本未进行实机测试，但代码已包含所有必要的跨平台适配（字体、滚轮、路径处理等）。如遇到问题，请在 GitHub Issues 中反馈，我会尽快帮助解决！
+> 当前主发布目标是 Windows 和 macOS 便携包。
 
 ## 手动安装
 
 ### 依赖要求
 
 - Python 3.8+
-- Tkinter (Linux 需手动安装)
+- PySide6
+- Playwright Chromium
 
 ### 安装步骤
 
@@ -162,28 +138,31 @@ pip install -r requirements.txt
 
 # 2. 安装 Playwright 浏览器
 python -m playwright install chromium
-
-# 3. (Linux) 安装系统依赖
-python -m playwright install-deps chromium
 ```
 
 ## 使用方法
 
 ### GUI 版本
 
-1. **启动程序**：运行对应平台的脚本或 `python main.py`
+1. **启动程序**：运行对应平台脚本，或在源码模式下执行 `python desktop_app.py`
 
-2. **添加任务**：
-   - 点击 "➕ Add URL" 按钮增加输入框
-   - 将浏览器中的 PDF Viewer URL 粘贴到输入框中
-   - 支持粘贴多个不同文档的链接
+2. **登录 ETD**：
+   - 点击“登录 ETD”
+   - 在程序打开的浏览器窗口中完成一次登录
+   - 关闭浏览器窗口后，程序会保存并复用这份登录会话
 
-3. **设置保存位置**：
+3. **添加任务**：
+   - 将 PDF Viewer URL 粘贴到输入框中，直接按 `Enter`
+   - 或点击“粘贴并添加”，从剪贴板中批量提取 URL
+   - 任务会进入下方表格，重复链接会自动跳过
+
+4. **设置保存位置**：
    - 点击 "📂 Browse..." 选择文件保存的目标文件夹
 
-4. **开始下载**：
-   - 点击 "🚀 Start Batch Download"
-   - 程序将自动处理所有链接并将文件保存到指定目录
+5. **开始下载**：
+   - 点击“开始下载”
+   - 程序将顺序处理任务列表中的全部链接并保存到指定目录
+   - 日志面板会显示当前进度和失败原因
 
 ### CLI 命令行版本
 
@@ -225,22 +204,19 @@ https://etd.xjtlu.edu.cn/static/readonline/web/viewer.html?file=%2Fapi%2Fv1%2FFi
 
 ```
 XJTLU_Final_paper_PDF_downloader/
-├── main.py              # GUI 主程序
+├── desktop_app.py       # 新桌面 GUI 启动入口
 ├── cli.py               # CLI 命令行程序
-├── downloader.py        # Playwright 下载核心
-├── url_parser.py        # URL 解析器
-├── test_download.py     # 命令行测试脚本
+├── src/xjtlu_downloader/
+│   ├── app.py           # 桌面应用入口
+│   ├── core/            # 服务层、路径、解析和文件工具
+│   ├── domain/          # 领域模型和错误码
+│   ├── infra/           # Playwright 下载与会话管理
+│   └── ui/              # PySide6 主窗口
+├── scripts/             # 便携包构建脚本
+├── tests/               # 单元测试与 GUI 回归测试
+├── downloader.py        # 旧下载入口兼容层
+├── url_parser.py        # 旧 URL 解析兼容层
 ├── requirements.txt     # Python 依赖
-├── install_win.bat      # Windows GUI 安装脚本
-├── install_mac.sh       # macOS GUI 安装脚本
-├── install_mac_cli.sh   # macOS CLI 安装脚本
-├── install_linux.sh     # Linux GUI 安装脚本
-├── install_linux_cli.sh # Linux CLI 安装脚本
-├── run_win.bat          # Windows 运行脚本
-├── run_mac.sh           # macOS GUI 运行脚本
-├── run_mac_cli.sh       # macOS CLI 运行脚本
-├── run_linux.sh         # Linux GUI 运行脚本
-├── run_linux_cli.sh     # Linux CLI 运行脚本
 └── README.md            # 说明文档
 ```
 
@@ -249,9 +225,10 @@ XJTLU_Final_paper_PDF_downloader/
 ⚠️ **重要提示**：
 
 1. 需要先在 XJTLU ETD 网站上找到试卷，然后复制 PDF 查看器的 URL
-2. URL 中包含时效性签名，请在有效期内及时下载
-3. 下载请求的 IP 必须与获取链接时的 IP 一致（请使用校园网或同一网络）
-4. 本工具仅供 XJTLU 学生学习复习使用
+2. 当前版本建议先在程序中点击“登录 ETD”，让程序保存自己的登录会话
+3. URL 中包含时效性签名，请在有效期内及时下载
+4. 下载请求的 IP 与登录上下文应保持一致
+5. 本工具仅供 XJTLU 学生学习复习使用
 
 ## 如何获取试卷链接
 
@@ -263,7 +240,7 @@ XJTLU_Final_paper_PDF_downloader/
 ## 技术栈
 
 - Python 3.8+
-- Tkinter (跨平台 GUI)
+- PySide6 (桌面 GUI)
 - Playwright (浏览器自动化)
 
 ## 遇到问题？
@@ -272,9 +249,12 @@ XJTLU_Final_paper_PDF_downloader/
 
 1. **查看错误提示**：程序会用中文详细说明问题原因和解决方案
 2. **GitHub Issue**：在[项目 Issues](https://github.com/kevinlasnh/XJTLU_Final_paper_PDF_downloader/issues)中留言描述问题
-3. **询问 Agent**：你也可以询问我（Copilot），我会尽力帮助解决
+3. **询问 Agent**：你也可以询问 Codex / Claude Code 协助排查
 
-遇事不决，记得先关闭 VPN/梯子/代理再试一次 😄
+遇到会话、403 或打开失败问题时，优先确认：
+- 你是否已经点击“登录 ETD”并在程序浏览器中登录
+- 当前 viewer URL 是否刚从 ETD 页面复制
+- 登录网络环境与下载网络环境是否一致
 
 ## License
 

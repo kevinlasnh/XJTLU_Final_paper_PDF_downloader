@@ -15,26 +15,13 @@ echo ""
 if ! command -v python3 &> /dev/null; then
     echo "❌ Python 3 is not installed."
     echo "Please install Python 3:"
-    echo "  Ubuntu/Debian: sudo apt install python3 python3-pip python3-tk"
-    echo "  Fedora: sudo dnf install python3 python3-pip python3-tkinter"
-    echo "  Arch: sudo pacman -S python python-pip tk"
+    echo "  Ubuntu/Debian: sudo apt install python3 python3-pip"
+    echo "  Fedora: sudo dnf install python3 python3-pip"
+    echo "  Arch: sudo pacman -S python python-pip"
     exit 1
 fi
 
 echo "✅ Python 3 found: $(python3 --version)"
-
-# Check for tkinter
-python3 -c "import tkinter" 2>/dev/null
-if [ $? -ne 0 ]; then
-    echo "❌ Tkinter is not installed."
-    echo "Please install it:"
-    echo "  Ubuntu/Debian: sudo apt install python3-tk"
-    echo "  Fedora: sudo dnf install python3-tkinter"
-    echo "  Arch: sudo pacman -S tk"
-    exit 1
-fi
-
-echo "✅ Tkinter found"
 
 # Check if pip is available
 if ! command -v pip3 &> /dev/null; then
@@ -69,7 +56,7 @@ echo "=========================================="
 echo "✅ Installation complete!"
 echo ""
 echo "To run the application:"
-echo "  python3 main.py"
+echo "  python3 desktop_app.py"
 echo ""
 echo "Or make it executable:"
 echo "  chmod +x run_linux.sh"

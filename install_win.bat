@@ -35,7 +35,7 @@ echo ==========================================
 echo [OK] Installation complete!
 echo.
 echo To run the application:
-echo   python main.py
+echo   python desktop_app.py
 echo   or double-click run_win.bat
 echo ==========================================
 pause

@@ -23,11 +23,16 @@ env/
 build/
 dist/
 *.egg-info/
-*.spec
 
 # Downloaded files
 downloads/
 *.pdf
+test_output/
+
+# Local planning files
+task_plan.md
+findings.md
+progress.md
 
 # OS files
 .DS_Store

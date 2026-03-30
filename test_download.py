@@ -28,19 +28,19 @@ def run_test(target_dir: str, pdf_url: str, headless: bool = False):
     print("\n[1/4] Validating URL...")
     is_valid, err_msg = validate_url(pdf_url)
     if not is_valid:
-        print(f"❌ Validation failed: {err_msg}")
+        print(f"[FAIL] Validation failed: {err_msg}")
         return False
-    print("✅ URL format is valid")
+    print("[OK] URL format is valid")
     
     # 2. Parse URL
     print("\n[2/4] Parsing URL...")
     parse_result = parse_viewer_url(pdf_url)
     
     if not parse_result['success']:
-        print(f"❌ Parse failed: {parse_result['error']}")
+        print(f"[FAIL] Parse failed: {parse_result['error']}")
         return False
         
-    print(f"✅ Parse successful!")
+    print("[OK] Parse successful!")
     print(f"   Record ID: {parse_result['record_id']}")
     print(f"   DB Code: {parse_result['db_code']}")
 
@@ -49,9 +49,9 @@ def run_test(target_dir: str, pdf_url: str, headless: bool = False):
     save_path = Path(target_dir)
     try:
         save_path.mkdir(parents=True, exist_ok=True)
-        print(f"✅ Directory ready: {save_path}")
+        print(f"[OK] Directory ready: {save_path}")
     except Exception as e:
-        print(f"❌ Cannot create directory: {e}")
+        print(f"[FAIL] Cannot create directory: {e}")
         return False
 
     # 4. Download File
@@ -77,18 +77,18 @@ def run_test(target_dir: str, pdf_url: str, headless: bool = False):
     )
     
     if result['success']:
-        print(f"\n✅ Download successful!")
+        print("\n[OK] Download successful!")
         print(f"   File size: {format_file_size(result['file_size'])}")
         print(f"   Saved to: {result['file_path']}")
         return True
     else:
-        print(f"\n❌ Download failed: {result['error']}")
+        print(f"\n[FAIL] Download failed: {result['error']}")
         return False
 
 
 def main():
     # Default configuration
-    target_dir = r"D:/workspace/cloud/google_drive/2025/Y4 first semester/EEE339/Final_paper"
+    target_dir = str((Path.cwd() / "test_output").resolve())
     pdf_url = "https://etd.xjtlu.edu.cn/static/readonline/web/viewer.html?file=%2Fapi%2Fv1%2FFile%2FBrowserFile%3FdbCode%3DEXAMXJTLU%26recordId%3D15797%26dbId%3D3%26flag%3D0%26timestamp%3D1765792574%26signature%3Df030d3445c383f4377c3b2c03ab5119699d62567ff26f2ad9c98a1b7bf6056f8%26clientIp%3D180.208.58.213"
     
     # Parse command line arguments
@@ -105,9 +105,9 @@ def main():
     
     print("\n" + "=" * 60)
     if success:
-        print("TEST PASSED ✅")
+        print("TEST PASSED [OK]")
     else:
-        print("TEST FAILED ❌")
+        print("TEST FAILED [FAIL]")
     print("=" * 60)
 
 
