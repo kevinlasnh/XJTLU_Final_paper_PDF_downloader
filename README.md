@@ -114,19 +114,19 @@ chmod +x install_mac.sh && ./install_mac.sh
 
 ### GitHub Release 便携包
 
-- 当前最新版本：[`v0.2.0`](https://github.com/kevinlasnh/xjtlu-final-paper-pdf-downloader/releases/tag/v0.2.0)
+- 当前最新版本：[`v0.2.1`](https://github.com/kevinlasnh/xjtlu-final-paper-pdf-downloader/releases/tag/v0.2.1)
 - Windows: `XJTLU-PDF-Downloader-win-x64.zip`
 - macOS Intel: `XJTLU-PDF-Downloader-macos-x64.zip`
 - macOS Apple Silicon: `XJTLU-PDF-Downloader-macos-arm64.zip`
 
-> `v0.2.0` 已加入课程代码批量发现、登录状态红绿提示和更明确的下载队列引导。Windows 已验证源码运行、GUI 主流程和便携包启动；macOS x64 / arm64 由 GitHub Actions 构建并上传。
+> `v0.2.1` 是与当前 `main` 分支完全对齐的最新便携版 release，包含课程代码批量发现、登录状态红绿提示和更明确的下载队列引导。Windows 已验证源码运行、GUI 主流程和便携包启动；macOS x64 / arm64 由 GitHub Actions 构建并上传。
 
 ## 系统兼容性测试状态
 
 | 平台 | 状态 | 说明 |
 |------|------|------|
 | **Windows** | ✅ 已测试 | 已验证源码运行、GUI 主流程和便携版 `.exe` 启动 |
-| **macOS** | ✅ 已发布 | `v0.2.0` 已成功构建并发布 x64 / arm64 便携包，尚未本地手工启动验收 |
+| **macOS** | ✅ 已发布 | `v0.2.1` 已成功构建并发布 x64 / arm64 便携包，尚未本地手工启动验收 |
 | **Linux** | ⚠️ 未作为主发布目标 | 保留源码运行脚本，但当前 release 不提供 Linux 便携包 |
 
 > 当前主发布目标是 Windows 和 macOS 便携包。
