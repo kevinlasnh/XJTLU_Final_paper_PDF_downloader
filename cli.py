@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 XJTLU PDF Downloader - Command Line Interface
-命令行版本，适用于 macOS/Linux 等不便安装 Tkinter GUI 依赖的系统
+命令行版本，适用于偏好 CLI 或不便运行桌面 GUI 的场景
 
 功能：
 - 单个/批量下载 XJTLU ETD 系统的 PDF 试卷

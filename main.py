@@ -1,7 +1,8 @@
 """
-XJTLU PDF Downloader - Batch Version (Playwright-based)
-A cross-platform GUI tool to batch download PDFs from XJTLU ETD system.
-Supports Windows, macOS, and Linux.
+Legacy Tkinter GUI for XJTLU PDF Downloader.
+
+This file is retained for backward compatibility and historical reference.
+The current desktop GUI entry point is `desktop_app.py` (PySide6-based).
 """
 
 import tkinter as tk

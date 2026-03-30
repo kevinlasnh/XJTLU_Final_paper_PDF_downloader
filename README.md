@@ -106,18 +106,19 @@ chmod +x install_mac.sh && ./install_mac.sh
 
 ### GitHub Release 便携包
 
+- 当前最新版本：[`v0.1.2`](https://github.com/kevinlasnh/XJTLU_Final_paper_PDF_downloader/releases/tag/v0.1.2)
 - Windows: `XJTLU-PDF-Downloader-win-x64.zip`
 - macOS Intel: `XJTLU-PDF-Downloader-macos-x64.zip`
 - macOS Apple Silicon: `XJTLU-PDF-Downloader-macos-arm64.zip`
 
-> 当前本地已验证 Windows 开发态与便携版启动；macOS 构建链路已接入 release workflow，但尚未在本地实机完成验收。
+> 最新 `v0.1.2` release 已上传三份便携包。Windows 已在本地验证源码运行和便携包启动；macOS x64 / arm64 已在 GitHub Actions 成功构建并上传，但尚未本地手工启动验收。
 
 ## 系统兼容性测试状态
 
 | 平台 | 状态 | 说明 |
 |------|------|------|
 | **Windows** | ✅ 已测试 | 已验证源码运行、GUI 主流程和便携版 `.exe` 启动 |
-| **macOS** | ⚠️ 部分验证 | 已接入自动构建脚本和 release workflow，尚未本地实机验收 |
+| **macOS** | ✅ 已发布 | `v0.1.2` 已成功构建并发布 x64 / arm64 便携包，尚未本地手工启动验收 |
 | **Linux** | ⚠️ 未作为主发布目标 | 保留源码运行脚本，但当前 release 不提供 Linux 便携包 |
 
 > 当前主发布目标是 Windows 和 macOS 便携包。
@@ -206,6 +207,8 @@ https://etd.xjtlu.edu.cn/static/readonline/web/viewer.html?file=%2Fapi%2Fv1%2FFi
 XJTLU_Final_paper_PDF_downloader/
 ├── desktop_app.py       # 新桌面 GUI 启动入口
 ├── cli.py               # CLI 命令行程序
+├── main.py              # 旧 Tkinter GUI，保留作兼容/对照，不再作为主线入口
+├── XJTLU_PDF_Downloader.spec  # 旧打包配置，当前主线使用 desktop_app.spec
 ├── src/xjtlu_downloader/
 │   ├── app.py           # 桌面应用入口
 │   ├── core/            # 服务层、路径、解析和文件工具
@@ -216,6 +219,7 @@ XJTLU_Final_paper_PDF_downloader/
 ├── tests/               # 单元测试与 GUI 回归测试
 ├── downloader.py        # 旧下载入口兼容层
 ├── url_parser.py        # 旧 URL 解析兼容层
+├── desktop_app.spec     # 当前桌面端便携打包配置
 ├── requirements.txt     # Python 依赖
 └── README.md            # 说明文档
 ```
